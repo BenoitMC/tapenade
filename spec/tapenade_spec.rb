@@ -3,17 +3,17 @@ class Hello
     @messages ||= []
   end
 
-  def hello(arg1)
-    messages << "hello #{arg1} #{yield}"
+  def hello(arg1, kwarg1:)
+    messages << "hello #{arg1} #{kwarg1} #{yield}"
   end
 
   def respond_to_missing?(method, include_private = false)
     method == :yo || super
   end
 
-  def method_missing(method, *args)
+  def method_missing(method, *args, **kwargs)
     return super unless method == :yo
-    messages << "yo #{args.first} #{yield}"
+    messages << "yo #{args.first} #{kwargs} #{yield}"
   end
 end
 
@@ -26,9 +26,9 @@ describe Tapenade do
 
   describe "#method_missing" do
     it "should call method and return self" do
-      result = instance.tap_hello("arg1") { "block" }
+      result = instance.tap_hello("arg1", kwarg1: "kw") { "block" }
       expect(result).to eq instance
-      expect(instance.messages).to eq ["hello arg1 block"]
+      expect(instance.messages).to eq ["hello arg1 kw block"]
     end
 
     it "should raise on tap undefined method" do
@@ -42,7 +42,7 @@ describe Tapenade do
     it "should call parent missing method" do
       result = instance.tap_yo("arg1") { "block" }
       expect(result).to eq instance
-      expect(instance.messages).to eq ["yo arg1 block"]
+      expect(instance.messages).to eq ["yo arg1 {} block"]
     end
   end # describe "method_missing"
 

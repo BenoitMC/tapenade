@@ -9,9 +9,9 @@ module Tapenade
     respond_to_tapenade?(method) || super
   end
 
-  def method_missing(method, *args, &block)
+  def method_missing(method, *args, **kwargs, &block)
     return super unless respond_to_tapenade?(method)
-    public_send(method.to_s[Tapenade.prefix.length..-1], *args, &block)
+    public_send(method.to_s[Tapenade.prefix.length..-1], *args, **kwargs, &block)
     self
   end
 
