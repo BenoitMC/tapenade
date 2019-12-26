@@ -7,6 +7,10 @@ class Hello
     messages << "hello #{arg1} #{kwarg1} #{yield}"
   end
 
+  def hello_no_args
+    messages << "hello_no_args"
+  end
+
   def respond_to_missing?(method, include_private = false)
     method == :yo || super
   end
@@ -29,6 +33,12 @@ describe Tapenade do
       result = instance.tap_hello("arg1", kwarg1: "kw") { "block" }
       expect(result).to eq instance
       expect(instance.messages).to eq ["hello arg1 kw block"]
+    end
+
+    it "should call method without args" do
+      result = instance.tap_hello_no_args
+      expect(result).to eq instance
+      expect(instance.messages).to eq ["hello_no_args"]
     end
 
     it "should raise on tap undefined method" do
