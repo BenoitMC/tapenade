@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tapenade (0.2.0)
+    tapenade (0.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -47,4 +47,4 @@ DEPENDENCIES
   tapenade!
 
 BUNDLED WITH
-   2.1.0
+   2.1.2
