@@ -11,6 +11,9 @@ class Hello
     messages << "hello_no_args"
   end
 
+  private def hello_private
+  end
+
   def respond_to_missing?(method, include_private = false)
     method == :yo || super
   end
@@ -39,6 +42,12 @@ describe Tapenade do
       result = instance.tap_hello_no_args
       expect(result).to eq instance
       expect(instance.messages).to eq ["hello_no_args"]
+    end
+
+    it "should not allow private methods" do
+      expect {
+        instance.tap_hello_private
+      }.to raise_error(NoMethodError)
     end
 
     it "should raise on tap undefined method" do
