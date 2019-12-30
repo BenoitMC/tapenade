@@ -9,11 +9,18 @@ module Tapenade
     respond_to_tapenade?(method) || super
   end
 
-  def method_missing(method, *args, **kwargs, &block)
-    return super unless respond_to_tapenade?(method)
-    # Ruby 2.6 + 2.7 friendly
-    eval "#{method.to_s[Tapenade.prefix.length..-1]}(*args, **kwargs, &block)"
-    self
+  if RUBY_VERSION >= "2.7.0"
+    def method_missing(method, *args, **kwargs, &block)
+      return super unless respond_to_tapenade?(method)
+      public_send(method.to_s[Tapenade.prefix.length..-1], *args, **kwargs, &block)
+      self
+    end
+  else
+    def method_missing(method, *args, &block)
+      return super unless respond_to_tapenade?(method)
+      public_send(method.to_s[Tapenade.prefix.length..-1], *args, &block)
+      self
+    end
   end
 
   def respond_to_tapenade?(method)

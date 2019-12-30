@@ -7,10 +7,6 @@ class Hello
     messages << "hello #{arg1} #{kwarg1} #{yield}"
   end
 
-  def hello_no_args
-    messages << "hello_no_args"
-  end
-
   private def hello_private
   end
 
@@ -39,9 +35,9 @@ describe Tapenade do
     end
 
     it "should call method without args" do
-      result = instance.tap_hello_no_args
+      instance = StringIO.new
+      result = instance.tap_rewind
       expect(result).to eq instance
-      expect(instance.messages).to eq ["hello_no_args"]
     end
 
     it "should not allow private methods" do
