@@ -1,4 +1,5 @@
 require "tapenade/version"
-require "tapenade/module"
+require "tapenade/delegator"
+require "tapenade/tap"
 
-Object.send(:include, Tapenade)
+Object.include(Tapenade::Tap)

@@ -1,29 +1,22 @@
 # Tapenade
 
-Want to call a method and return `self` instead of normal return ? Just prefix it with `tap_` !
+Tapenade allows to chain method after `tap` instead of using a block.
 
 ## Examples
 
 ```ruby
-# Without any tap method:
-def update_user
-  user = User.find(param[:id])
-  user.update!(user_params)
-  return user
-end
-
 # With Ruby's tap
-def update_user
-  User.find(param[:id]).tap { |user| user.update!(user_params) }
-end
+User.find(param[:id]).tap { |user| user.update!(user_params) }
+# => returns the user
 
 # With Tapenade:
-def update_user
-  User.find(param[:id]).tap_update!(user_params)
-end
+User.find(param[:id]).tap.update!(user_params)
+# => returns the user
 ```
 
 Examples are using Rails models but it works with any method on any object.
+
+You can of course still use `tap` with blocks as usual.
 
 ## Installation
 
@@ -32,6 +25,8 @@ Add this line to your application's Gemfile:
 ```ruby
 gem "tapenade"
 ```
+
+That's all.
 
 ## License
 
